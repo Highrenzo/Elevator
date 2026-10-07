@@ -17,13 +17,16 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Sfondo scuro anche sotto la barra Home di iOS (evita la striscia bianca) */
-html { height: 100%; background-color: var(--wall); }
+/* Acciaio a tutto schermo, anche sotto la barra Home di iOS */
+html { height: 100%; background-color: var(--steel-2); }
 
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  background: radial-gradient(ellipse at top, #2a2c31 0%, var(--wall) 70%) var(--wall);
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, rgba(0,0,0,0.04) 1px 3px),
+    linear-gradient(160deg, var(--steel-1) 0%, var(--steel-2) 55%, var(--steel-3) 100%);
+  background-color: var(--steel-2);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   display: flex;
@@ -37,38 +40,15 @@ body {
   overflow: hidden;
 }
 
-/* ---------- Pannello in acciaio spazzolato ---------- */
+/* ---------- Pannello (l'acciaio è lo sfondo dell'intero schermo) ---------- */
 .panel {
   width: min(100%, 460px);
   max-height: 100%;
   display: flex;
   flex-direction: column;
   gap: clamp(16px, 3vh, 28px);
-  padding: clamp(20px, 4vh, 36px) clamp(20px, 6vw, 40px);
-  border-radius: 18px;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, rgba(0,0,0,0.04) 1px 3px),
-    linear-gradient(160deg, var(--steel-1) 0%, var(--steel-2) 55%, var(--steel-3) 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -2px 4px rgba(0,0,0,0.25),
-    0 20px 60px rgba(0,0,0,0.6);
-  position: relative;
+  padding: clamp(20px, 4vh, 36px) clamp(4px, 2vw, 20px);
 }
-
-/* Viti decorative */
-.panel::before, .panel::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  width: 12px; height: 12px;
-  margin-left: -6px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #eee, #888 70%);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
-}
-.panel::before { top: 8px; }
-.panel::after  { bottom: 8px; }
 
 /* ---------- Display ---------- */
 .display__screen {
