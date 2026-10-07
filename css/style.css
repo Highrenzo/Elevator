@@ -17,10 +17,13 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body { height: 100%; }
+/* Sfondo scuro anche sotto la barra Home di iOS (evita la striscia bianca) */
+html { height: 100%; background-color: var(--wall); }
 
 body {
-  background: radial-gradient(ellipse at top, #2a2c31 0%, var(--wall) 70%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: radial-gradient(ellipse at top, #2a2c31 0%, var(--wall) 70%) var(--wall);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   display: flex;
