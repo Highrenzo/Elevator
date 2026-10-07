@@ -16,7 +16,7 @@ const CONFIG = {
   startFloorIndex: 0,
 
   // Secondi impiegati per attraversare un piano.
-  secondsPerFloor: 3.5,
+  secondsPerFloor: 2.8,
 
   // Suono "ding" all'arrivo.
   chime: true,
