@@ -1,0 +1,246 @@
+:root {
+  --wall: #1a1b1e;
+  --steel-1: #d9dce0;
+  --steel-2: #aeb3ba;
+  --steel-3: #8c9199;
+  --led: #ff5a36;
+  --led-glow: rgba(255, 90, 54, 0.55);
+  --lit: #ffb547;
+  --lit-glow: rgba(255, 181, 71, 0.75);
+  --ink: #2b2e33;
+
+  /* Colori isybank */
+  --isy-blue: #1e9bfa;
+  --isy-green: #27e5b1;
+  --isy-orange: #ff6600;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background: radial-gradient(ellipse at top, #2a2c31 0%, var(--wall) 70%);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 16px);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  overflow: hidden;
+}
+
+/* ---------- Pannello in acciaio spazzolato ---------- */
+.panel {
+  width: min(100%, 460px);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vh, 28px);
+  padding: clamp(20px, 4vh, 36px) clamp(20px, 6vw, 40px);
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, rgba(0,0,0,0.04) 1px 3px),
+    linear-gradient(160deg, var(--steel-1) 0%, var(--steel-2) 55%, var(--steel-3) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 4px rgba(0,0,0,0.25),
+    0 20px 60px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+/* Viti decorative */
+.panel::before, .panel::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 12px; height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #eee, #888 70%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+}
+.panel::before { top: 8px; }
+.panel::after  { bottom: 8px; }
+
+/* ---------- Display ---------- */
+.display__screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: clamp(110px, 18vh, 160px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0b0b0c, #151517);
+  box-shadow:
+    inset 0 0 0 3px #3a3d42,
+    inset 0 6px 18px rgba(0,0,0,0.9);
+}
+
+.display__floor {
+  font-family: "SF Mono", "Menlo", "Consolas", monospace;
+  font-weight: 700;
+  font-size: clamp(64px, 12vh, 104px);
+  line-height: 1;
+  min-width: 1.4ch;
+  text-align: center;
+  color: var(--led);
+  text-shadow: 0 0 8px var(--led-glow), 0 0 22px var(--led-glow);
+}
+
+.display__floor.tick { animation: tick 0.35s ease-out; }
+@keyframes tick {
+  from { transform: translateY(var(--tick-from, 0)); opacity: 0.2; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Arrivo: la cifra passa per i tre colori isybank */
+.display__floor.arrived { animation: arrive-color 1.8s ease-in-out; }
+@keyframes arrive-color {
+  0%   { color: var(--led); transform: scale(1); }
+  15%  { color: var(--isy-blue);   text-shadow: 0 0 22px var(--isy-blue);   transform: scale(1.12); }
+  45%  { color: var(--isy-green);  text-shadow: 0 0 22px var(--isy-green); }
+  75%  { color: var(--isy-orange); text-shadow: 0 0 22px var(--isy-orange); transform: scale(1.05); }
+  100% { color: var(--led); transform: scale(1); }
+}
+
+/* Freccia animata: tre chevron che scorrono */
+.display__arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 34px;
+  position: absolute;
+  left: 18%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.display__arrow span {
+  width: 18px; height: 18px;
+  border-left: 5px solid currentColor;
+  border-top: 5px solid currentColor;
+  filter: drop-shadow(0 0 5px currentColor);
+  opacity: 0.2;
+}
+/* Frecce di viaggio nei tre colori isybank */
+.display__arrow span:nth-child(1) { color: var(--isy-blue); }
+.display__arrow span:nth-child(2) { color: var(--isy-green); }
+.display__arrow span:nth-child(3) { color: var(--isy-orange); }
+
+.display__arrow[data-dir="up"],
+.display__arrow[data-dir="down"] { opacity: 1; }
+
+.display__arrow[data-dir="up"] span   { transform: rotate(45deg); animation: chevron 0.9s infinite; }
+.display__arrow[data-dir="down"] span { transform: rotate(225deg); animation: chevron 0.9s infinite; }
+.display__arrow[data-dir="up"] span:nth-child(3),
+.display__arrow[data-dir="down"] span:nth-child(1) { animation-delay: 0s; }
+.display__arrow[data-dir="up"] span:nth-child(2),
+.display__arrow[data-dir="down"] span:nth-child(2) { animation-delay: 0.3s; }
+.display__arrow[data-dir="up"] span:nth-child(1),
+.display__arrow[data-dir="down"] span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes chevron {
+  0%, 100% { opacity: 0.15; }
+  30%      { opacity: 1; }
+}
+
+/* ---------- Pulsantiera ---------- */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 2.6vh, 24px) clamp(24px, 8vw, 48px);
+  justify-items: center;
+  padding: 0 clamp(8px, 4vw, 24px);
+}
+
+.key {
+  --size: clamp(64px, 10vh, 92px);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  font: inherit;
+  font-size: calc(var(--size) * 0.36);
+  font-weight: 700;
+  color: #3a3d42;
+  background: radial-gradient(circle at 35% 30%, #f4f5f6, #b9bec5 60%, #9196a0);
+  box-shadow:
+    0 0 0 4px #7d828a,
+    0 0 0 6px #c9cdd2,
+    0 4px 8px rgba(0,0,0,0.35),
+    inset 0 -3px 6px rgba(0,0,0,0.2);
+  transition: transform 0.08s, box-shadow 0.25s, color 0.25s;
+}
+
+/* Anello luminoso: durante il viaggio ruota nei tre colori isybank */
+.key::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(var(--isy-blue), var(--isy-green), var(--isy-orange), var(--isy-blue));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.key:active { transform: scale(0.94); }
+
+.key.lit {
+  color: var(--isy-blue);
+  text-shadow: 0 0 10px rgba(30, 155, 250, 0.6);
+}
+.key.lit::after {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(39, 229, 177, 0.8));
+  animation: spin 1.2s linear infinite;
+}
+@keyframes spin { to { transform: rotate(1turn); } }
+
+/* Tocco: tre onde che si allargano (blu, verde, arancio) */
+.ripple {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 3px solid var(--c);
+  pointer-events: none;
+  animation: ripple 0.75s ease-out both;
+}
+@keyframes ripple {
+  from { transform: scale(1);   opacity: 1; }
+  to   { transform: scale(1.7); opacity: 0; }
+}
+
+.key.current { color: #1d1f23; }
+
+.key.shake { animation: shake 0.3s; }
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ---------- Targhetta ---------- */
+.plate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #555a61;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+.plate__dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #555a61;
+}
