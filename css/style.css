@@ -9,6 +9,9 @@
   --lit-glow: rgba(255, 181, 71, 0.75);
   --ink: #2b2e33;
 
+  /* 1% dell'altezza utile (schermo meno notch e barra Home) */
+  --vh: calc((100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px) / 100);
+
   /* Colori isybank */
   --isy-blue: #1e9bfa;
   --isy-green: #27e5b1;
@@ -42,12 +45,12 @@ body {
 
 /* ---------- Pannello (l'acciaio è lo sfondo dell'intero schermo) ---------- */
 .panel {
-  width: min(100%, 460px);
+  width: min(100%, 540px);
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 3vh, 28px);
-  padding: clamp(20px, 4vh, 36px) clamp(4px, 2vw, 20px);
+  gap: clamp(16px, calc(var(--vh) * 3.5), 40px);
+  padding: clamp(8px, calc(var(--vh) * 2), 36px) clamp(4px, 2vw, 20px);
 }
 
 /* ---------- Display ---------- */
@@ -56,7 +59,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: clamp(110px, 18vh, 160px);
+  height: clamp(120px, calc(var(--vh) * 21), 260px);
   border-radius: 10px;
   background: linear-gradient(180deg, #0b0b0c, #151517);
   box-shadow:
@@ -67,7 +70,7 @@ body {
 .display__floor {
   font-family: "SF Mono", "Menlo", "Consolas", monospace;
   font-weight: 700;
-  font-size: clamp(64px, 12vh, 104px);
+  font-size: clamp(64px, calc(var(--vh) * 14), 170px);
   line-height: 1;
   min-width: 1.4ch;
   text-align: center;
@@ -136,13 +139,13 @@ body {
 .keypad {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(14px, 2.6vh, 24px) clamp(24px, 8vw, 48px);
+  gap: clamp(14px, calc(var(--vh) * 3.2), 40px) clamp(24px, 8vw, 64px);
   justify-items: center;
   padding: 0 clamp(8px, 4vw, 24px);
 }
 
 .key {
-  --size: clamp(64px, 10vh, 92px);
+  --size: clamp(64px, calc(var(--vh) * 11), 130px);
   width: var(--size);
   height: var(--size);
   border-radius: 50%;
